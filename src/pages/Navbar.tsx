@@ -20,7 +20,7 @@ export default function Navbar() {
                     </span>
                 </Link>
 
-                <div className="text-black flex gap-4">
+                <div className="text-black flex gap-3">
                     <Theme />
                     <Profile />
                 </div>
