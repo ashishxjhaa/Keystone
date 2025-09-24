@@ -2,9 +2,19 @@
 
 import Back from "@/components/Back"
 import Navbar from "@/pages/Navbar"
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 
 function ProfilePage() {
+    const router = useRouter();
+    
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            router.push("/login");
+        }
+    }, [router]);
 
     return (
         <div className="min-h-screen dark:bg-black bg-[#F6F6EF] pt-14 sm:pt-18">

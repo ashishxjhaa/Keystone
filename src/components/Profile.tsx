@@ -8,6 +8,11 @@ export function Profile() {
     const [openProfile, setOpenProfile] = useState(false)
     const router = useRouter();
 
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        window.location.href = "/login";
+    };
+
     return (
         <>
         <div onClick={() => setOpenProfile(!openProfile)} className="group flex items-center gap-3.5 hover:bg-[#F8E6DB] dark:hover:bg-teal-50/10 border border-[#FF8162]/70 hover:border-[#FF8162] dark:border-[#FF8162]/70 rounded-md px-1.5 sm:px-2 py-1.5 cursor-pointer">
@@ -47,7 +52,7 @@ export function Profile() {
                         <span className="tracking-wide">Profile</span>
                     </div>
 
-                    <div className="border-t border-gray-600 dark:border-white/80">
+                    <div onClick={handleLogout} className="border-t border-gray-600 dark:border-white/80">
                         <div className="flex items-center gap-2 cursor-pointer px-3 py-2 mt-1 rounded-md hover:bg-red-400/12 dark:hover:bg-red-400/25 text-sm">
                             <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-log-out-icon lucide-log-out text-black dark:text-white"><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/></svg>
                             <span className="text-[#E75C60] tracking-wide">Log out</span>
