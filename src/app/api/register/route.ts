@@ -4,7 +4,7 @@ import User from "@/models/User";
 import connectDB from "@/lib/db";
 import { z } from "zod";
 
-export const registerSchema = z.object({
+const registerSchema = z.object({
     fullName: z.string(),
     email: z.string().email(),
     password: z.string().min(3),
