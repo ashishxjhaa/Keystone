@@ -1,17 +1,38 @@
 "use client"
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import { useRouter } from "next/navigation";
 
 
 export function Profile() {
     const [openProfile, setOpenProfile] = useState(false)
     const router = useRouter();
+    const [user, setUser] = useState<{ fullName: string; email: string } | null>(null);
 
     const handleLogout = () => {
         localStorage.removeItem("token");
         window.location.href = "/login";
     };
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const token = localStorage.getItem("token");
+                const res = await axios.get<any>("/api/profile", {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                setUser(res.data.user);
+            } catch (err) {
+                console.error(err);
+            }
+        };
+        fetchUser();
+    }, []);
+
+    const firstLetter = user?.fullName?.charAt(0).toUpperCase();
+    const firstName = user?.fullName?.split(" ")[0];
+    const email = user?.email;
 
     return (
         <>
@@ -28,15 +49,15 @@ export function Profile() {
                     <div className="flex items-center gap-3">
                         <div className="relative flex shrink-0 overflow-hidden rounded-full size-12 ring-1 ring-black/10">
                             <div className="flex h-full w-full items-center justify-center rounded-full bg-white text-[#FF8162] text-2xl font-medium">
-                                A
+                                {firstLetter}
                             </div>
                         </div>
 
                         <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-1.5">
-                                <p className="font-medium truncate text-black dark:text-white tracking-wide text-lg">Ashish</p>
+                                <p className="font-medium truncate text-black dark:text-white tracking-wide text-lg">{firstName}</p>
                             </div>
-                            <p className="text-xs text-black/80 dark:text-white/80 truncate tracking-wide">ashishxyzjha@gmail.com</p>
+                            <p className="text-xs text-black/80 dark:text-white/80 truncate tracking-wide">{email}</p>
                         </div>
                     </div>
 
