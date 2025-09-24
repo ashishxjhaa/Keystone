@@ -8,7 +8,7 @@ npm install
 
 sudo npm install
 
-## Start the frontend server:
+## Start the server:
 
 npm run dev || sudo npm run dev
 
@@ -69,5 +69,9 @@ Use managed DB (Mongo Atlas / RDS). Use replicas and backups. Use Redis for cach
 - PUT /api/post/:id — update post
 
 - DELETE /api/post/:id — delete post
+
+``env file looks like``
+- MONGODB_URI=your_mongodb_connection_string_here
+- JWT_SECRET=your_jwt_secret_here
 
 ``Thats it ``
