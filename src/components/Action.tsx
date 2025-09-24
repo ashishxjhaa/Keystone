@@ -26,6 +26,7 @@ export function Action() {
             const token = localStorage.getItem("token");
             const res = await axios.post("/api/post", postData, { headers: { userId: token || "" }, withCredentials: true });
             toast.success("Posted successfully 🎉");
+            window.dispatchEvent(new CustomEvent('postCreated'));
             setPostData({ title: "", content: "" });
             setOpenProfile(false);
         } catch (error) {

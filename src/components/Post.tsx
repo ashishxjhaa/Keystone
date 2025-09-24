@@ -31,6 +31,12 @@ export function Post() {
 
     useEffect(() => {
         fetchPosts();
+
+        const handlePostCreated = () => fetchPosts();
+        window.addEventListener('postCreated', handlePostCreated);
+    
+        return () => window.removeEventListener('postCreated', handlePostCreated);
+        
     }, []);
 
     return (
