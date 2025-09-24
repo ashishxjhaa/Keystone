@@ -4,11 +4,47 @@ import Link from "next/link";
 import { useState } from "react";
 import { CiUser } from "react-icons/ci";
 import { FaRegUser } from "react-icons/fa";
+import axios from "axios";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 
 function RegisterPage() {
 
     const [showPassword, setShowPassword] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const route = useRouter();
+
+    const [formData, setFormData] = useState({
+        fullName: "",
+        email: "",
+        password: ""
+    });
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        if (!formData.fullName || !formData.email || !formData.password) {
+            toast.error("All fields are required");
+            return;
+        }
+
+        if (formData.password.length < 6) {
+            toast.error("Password must 6 characters long");
+            return;
+        }
+
+        try {
+            setLoading(true);
+            await axios.post("/api/register", formData, { withCredentials: true });
+            route.push("/login");
+            toast.success("Register successful 🎉");
+        } catch (err) {
+            toast.error("Register failed!");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <div className="min-h-screen bg-[#F6F6EF]">
@@ -23,7 +59,7 @@ function RegisterPage() {
                     </div>
                 </div>
    
-                <form className="space-y-5 sm:space-y-7 px-5">
+                <form className="space-y-5 sm:space-y-7 px-5" onSubmit={handleSubmit}>
                     <div>
                         <label>
                             <span className="text-black font-medium">Full Name</span>
@@ -32,7 +68,7 @@ function RegisterPage() {
                             <div className="text-black opacity-80 absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                 <FaRegUser />
                             </div>
-                            <input type="text" className="text-black w-full pl-10 focus:outline-none focus:ring-0" placeholder="Ashish Jha"/>
+                            <input type="text" value={formData.fullName} onChange={(e) => setFormData({ ...formData, fullName: e.target.value })} className="text-black w-full pl-10 focus:outline-none focus:ring-0" placeholder="Ashish Jha"/>
                         </div>
                     </div>
 
@@ -44,7 +80,7 @@ function RegisterPage() {
                             <div className="text-black opacity-80 absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-mail size-5 text-base-content/40"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
                             </div>
-                            <input type="email" className="text-black w-full pl-10 focus:outline-none focus:ring-0" placeholder="you@example.com"/>
+                            <input type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="text-black w-full pl-10 focus:outline-none focus:ring-0" placeholder="you@example.com"/>
                         </div>
                     </div>
    
@@ -56,7 +92,7 @@ function RegisterPage() {
                             <div className="text-black opacity-80 absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-lock size-5 text-base-content/40"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                             </div>
-                            <input type={showPassword ? "text" : "password"} className="input input-bordered w-full pl-10 text-black focus:outline-none focus:ring-0" placeholder="••••••••"/>
+                            <input type={showPassword ? "text" : "password"} value={formData.password} onChange={(e) => setFormData({ ...formData, password: e.target.value })} className="input input-bordered w-full pl-10 text-black focus:outline-none focus:ring-0" placeholder="••••••••"/>
                             <button type="button" onClick={() => setShowPassword(!showPassword)} className="text-black opacity-70 absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer">
                                 {showPassword ? (
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-eye size-6 text-base-content/40"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"></path><circle cx="12" cy="12" r="3"></circle></svg>
@@ -67,7 +103,7 @@ function RegisterPage() {
                         </div>
                     </div>
                    
-                    <button type="submit" className="bg-[#FE6603] hover:bg-[#FF762D] font-semibold tracking-wide rounded-sm py-2 sm:py-3 cursor-pointer text-white w-full">Register</button>
+                    <button type="submit" disabled={loading} className="bg-[#FE6603] hover:bg-[#FF762D] font-semibold tracking-wide rounded-sm py-2 sm:py-3 cursor-pointer text-white w-full">{loading ? "Registering..." : "Register"}</button>
                 </form>
    
                 <div className="text-center pt-5 pb-8 sm:pb-10">
