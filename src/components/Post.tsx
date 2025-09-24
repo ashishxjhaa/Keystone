@@ -16,9 +16,17 @@ interface PostType {
 
 
 
-export function Post() {
+export function Post({ searchQuery = "" }) {
     const [posts, setPosts] = useState<PostType[]>([]);
+    const [filteredPosts, setFilteredPosts] = useState<PostType[]>([]);
     const [openProfile, setOpenProfile] = useState<string | null>(null);
+
+    useEffect(() => {
+        const filtered = posts.filter(post => 
+            post.title.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+        setFilteredPosts(filtered);
+    }, [posts, searchQuery]);
 
     const fetchPosts = async () => {
         try {
@@ -36,12 +44,25 @@ export function Post() {
         window.addEventListener('postCreated', handlePostCreated);
     
         return () => window.removeEventListener('postCreated', handlePostCreated);
-        
+
     }, []);
+
+    useEffect(() => {
+        const handleSearchChange = (e: any) => {
+            const query = e.detail;
+            const filtered = posts.filter(post => 
+                post.title.toLowerCase().includes(query.toLowerCase())
+            );
+            setFilteredPosts(filtered);
+        };
+    
+        window.addEventListener('searchQueryChanged', handleSearchChange);
+        return () => window.removeEventListener('searchQueryChanged', handleSearchChange);
+    }, [posts]);
 
     return (
         <div className="px-10 py-12 flex gap-4 flex-wrap w-full sm:w-[90%] max-w-8xl mx-auto">
-            {posts.map((post: any) => (
+            {filteredPosts.map((post) => (
             <div key={post._id} className="flex flex-col gap-3 text-left max-w-sm px-2 sm:px-4 py-8 pb-4 w-fit h-fit rounded-lg bg-white dark:bg-neutral-700 text-black dark:text-white border border-black/20 dark:border-white/50 hover:-translate-y-2 hover:shadow-lg transition-transform duration-550 shadow-[#FE6603]/50 dark:shadow-white/50">
                 <div className="px-3 sm:px-4 font-bold text-lg tracking-wide">{post.title}</div>
                 <div className="px-3 sm:px-4">{post.content}</div>
