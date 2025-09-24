@@ -10,12 +10,12 @@ const postSchema = new mongoose.Schema({
         type: String, 
         required: true,
         minlength: 2,
-        maxlength: 15,
+        maxlength: 35,
     },
     content: { 
         type: String, 
         required: true,
-        maxlength: 100,
+        maxlength: 150,
     },
     createdAt: { 
         type: Date, 
@@ -23,6 +23,6 @@ const postSchema = new mongoose.Schema({
     },
 });
 
-const Post = mongoose.models.Listing || mongoose.model("Post", postSchema);
+const Post = mongoose.models.Post || mongoose.model("Post", postSchema);
 
 export default Post;

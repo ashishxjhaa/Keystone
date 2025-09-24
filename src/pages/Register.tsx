@@ -34,8 +34,8 @@ function RegisterPage() {
             return;
         }
 
+        setLoading(true);
         try {
-            setLoading(true);
             await axios.post("/api/register", formData, { withCredentials: true });
             route.push("/login");
             toast.success("Register successful 🎉");

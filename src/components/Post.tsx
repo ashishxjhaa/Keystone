@@ -12,7 +12,7 @@ export function Post() {
 
     return (
         <div className="px-10 py-12 flex gap-4 flex-wrap w-full sm:w-[90%] max-w-8xl mx-auto">
-            <div className="flex flex-col gap-3 text-left max-w-sm px-2 sm:px-4 py-8 pb-4 w-fit h-fit rounded-lg bg-white dark:bg-neutral-700 text-black dark:text-white border border-black/20 dark:border-white/50">
+            <div className="flex flex-col gap-3 text-left max-w-sm px-2 sm:px-4 py-8 pb-4 w-fit h-fit rounded-lg bg-white dark:bg-neutral-700 text-black dark:text-white border border-black/20 dark:border-white/50 hover:-translate-y-2 hover:shadow-lg transition-transform duration-550 shadow-[#FE6603]/50 dark:shadow-white/50">
                 <div className="px-3 sm:px-4 font-bold text-lg tracking-wide">This is my title of this section.</div>
                 <div className="px-3 sm:px-4">Conent come here and it will show under the title but it still remains inside the div. will show under the title but it still remains inside the div.</div>
                 <div onClick={() => setOpenProfile(!openProfile)} className="flex w-full justify-end pr-3">

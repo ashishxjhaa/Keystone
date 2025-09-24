@@ -2,10 +2,38 @@
 
 import { useState } from "react";
 import { IoAddOutline } from "react-icons/io5";
+import axios from "axios";
+import { toast } from "sonner";
 
 
 export function Action() {
     const [openProfile, setOpenProfile] = useState(false)
+    const [loading, setLoading] = useState(false);
+    const [postData, setPostData] = useState({
+        title: "",
+        content: ""
+    });
+
+    const handleSubmit = async () => {
+        
+        if (!postData.title.trim() || !postData.content.trim()) {
+            toast.error("Both is required");
+            return;
+        }
+
+        setLoading(true);
+        try {
+            const token = localStorage.getItem("token");
+            const res = await axios.post("/api/post", postData, { headers: { userId: token || "" }, withCredentials: true });
+            toast.success("Posted successfully 🎉");
+            setPostData({ title: "", content: "" });
+            setOpenProfile(false);
+        } catch (error) {
+            toast.error("Post Failed, Try again!");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <>
@@ -31,17 +59,23 @@ export function Action() {
 
                     <div className="flex flex-col gap-4">
                         <div className="bg-white dark:bg-neutral-800 rounded-md p-2 px-3">
-                            <label className="block text-md font-medium text-black dark:text-white tracking-wide">Title</label>
-                            <input type="text" className="w-full mt-1 p-2 mb-2 rounded-md border border-black/50 dark:border-white/60 focus:outline-none" />
+                            <label className="flex justify-between text-md font-medium text-black dark:text-white tracking-wide">
+                                <div>Title</div>
+                                <div className="text-gray-500">{postData.title.length}/35</div>
+                            </label>
+                            <input type="text" value={postData.title} onChange={(e) => setPostData({ ...postData, title: e.target.value })} maxLength={35} className="w-full mt-1 p-2 mb-2 rounded-md border border-black/50 dark:border-white/60 focus:outline-none" />
                         </div>
                         <div className="bg-white dark:bg-neutral-800 rounded-md p-2 px-3">
-                            <label className="block text-md font-medium text-black dark:text-white tracking-wide">Content</label>
-                            <textarea className="w-full min-h-20 mt-1 p-2 mb-2 rounded-md border border-black/50 dark:border-white/60 focus:outline-none" />
+                            <label className="flex justify-between text-md font-medium text-black dark:text-white tracking-wide">
+                                <div>Content</div>
+                                <div className="text-gray-500">{postData.content.length}/150</div>
+                            </label>
+                            <textarea value={postData.content} onChange={(e) => setPostData({ ...postData, content: e.target.value })} maxLength={150} className="w-full min-h-22 max-h-22 mt-1 p-2 mb-2 rounded-md border border-black/50 dark:border-white/60 focus:outline-none" />
                         </div>
                     </div>
 
-                    <button className="bg-[#FE6603] hover:bg-[#FF762D] text-white font-semibold tracking-wide rounded-md py-2 mt-4 cursor-pointer w-full">
-                        Post
+                    <button onClick={handleSubmit} disabled={loading} className="bg-[#FE6603] hover:bg-[#FF762D] text-white font-semibold tracking-wide rounded-md py-2 mt-4 cursor-pointer w-full">
+                        {loading ? "Posting..." : "Post"}
                     </button>
                 </div>
             </div>

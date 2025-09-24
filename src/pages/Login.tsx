@@ -26,9 +26,9 @@ function LoginPage() {
             toast.error("All fields are required");
             return;
         }
-    
+        
+        setLoading(true);
         try {
-            setLoading(true);
             const res = await axios.post<any>("/api/login", formData, { withCredentials: true });
             localStorage.setItem("token", res.data.token);
             route.push("/dashboard");
