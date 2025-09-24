@@ -1,11 +1,12 @@
 "use client"
 
 import { useState } from "react";
-
+import { useRouter } from "next/navigation";
 
 
 export function Profile() {
     const [openProfile, setOpenProfile] = useState(false)
+    const router = useRouter();
 
     return (
         <>
@@ -40,7 +41,7 @@ export function Profile() {
                     </div>
                 </div>
 
-                <div className="bg-white dark:bg-neutral-800 p-2 space-y-1 w-full rounded-b-lg">
+                <div onClick={() => router.push("/profile")} className="bg-white dark:bg-neutral-800 p-2 space-y-1 w-full rounded-b-lg">
                     <div className="flex items-center text-black dark:text-white dark:hover:text-black gap-2 cursor-pointer px-3 py-2 rounded-md hover:bg-[#F6F6EF] dark:hover:bg-[#F6F6EF]/90 text-sm">
                         <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-user-round-icon lucide-user-round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
                         <span className="tracking-wide">Profile</span>
