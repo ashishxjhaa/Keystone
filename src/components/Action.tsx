@@ -20,7 +20,31 @@ export function Action() {
         </div>
 
         {openProfile && (
-            <div className="text-center pt-10">Open</div>
+            <div className="fixed inset-0 z-10 flex items-center justify-center">
+                <div className="relative bg-[#F6F6EF] dark:bg-neutral-700 rounded-xl p-6 w-[90%] max-w-md max-h-[60vh] overflow-y-auto border border-black/50">
+                    <div className="flex items-center justify-between mb-4">
+                        <div className="font-semibold text-lg text-black dark:text-white tracking-wide">POST DETAILS</div>
+                        <button onClick={() => setOpenProfile(false)} className="p-1 bg-white dark:bg-neutral-800 hover:bg-[#FE6603] dark:hover:bg-[#FE6603]/90 text-black dark:text-white hover:text-white rounded-full cursor-pointer">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-x"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+                        </button>
+                    </div>
+
+                    <div className="flex flex-col gap-4">
+                        <div className="bg-white dark:bg-neutral-800 rounded-md p-2 px-3">
+                            <label className="block text-md font-medium text-black dark:text-white tracking-wide">Title</label>
+                            <input type="text" className="w-full mt-1 p-2 mb-2 rounded-md border border-black/50 dark:border-white/60 focus:outline-none" />
+                        </div>
+                        <div className="bg-white dark:bg-neutral-800 rounded-md p-2 px-3">
+                            <label className="block text-md font-medium text-black dark:text-white tracking-wide">Content</label>
+                            <textarea className="w-full min-h-20 mt-1 p-2 mb-2 rounded-md border border-black/50 dark:border-white/60 focus:outline-none" />
+                        </div>
+                    </div>
+
+                    <button className="bg-[#FE6603] hover:bg-[#FF762D] text-white font-semibold tracking-wide rounded-md py-2 mt-4 cursor-pointer w-full">
+                        Post
+                    </button>
+                </div>
+            </div>
         )}
         </>
     )
