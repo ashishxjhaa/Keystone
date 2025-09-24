@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+``How to run locally``
 
-## Getting Started
+## Install dependencies:
 
-First, run the development server:
+npm install
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## For Mac user Install dependencies:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+sudo npm install
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Start the frontend server:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+npm run dev || sudo npm run dev
 
-## Learn More
+``Project Description``
 
-To learn more about Next.js, take a look at the following resources:
+This is a Next.js full-stack project where users can register, log in, create posts, edit or delete them, update their profile, and search posts by title. It’s built with Next.js, Tailwind CSS, TypeScript, and uses MongoDB for the database. The project demonstrates a simple social posting platform with essential CRUD functionality and user authentication.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+``Features``
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- User Authentication: Register, login, and logout securely.
 
-## Deploy on Vercel
+- Create Post: Users can create new posts with a title and content.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Edit & Delete Post: Update or remove your existing posts.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Profile Page: View and update user information.
+
+- Search Posts: Search posts by title for easy filtering.
+
+- Responsive UI: Built with Tailwind CSS for a clean and responsive design.
+
+
+``How I would scale this for production``
+
+## Frontend:
+
+Component library + design tokens, strict folder structure, TypeScript, React Query for caching, SSR where needed, bundling optimization, CDN + Vercel for edge.
+
+E2E tests (Cypress), unit tests (Jest/RTL), CI pipeline to run tests and lint.
+
+## Backend:
+
+Separate microservices for auth and core APIs, use Postgres or managed Mongo for production, use connection pooling (PgBouncer).
+
+Use refresh tokens with rotating refresh tokens, rate limiting, input sanitization, centralized logging (ELK), monitoring (Prometheus + Grafana), and deploy behind load balancer with autoscaling.
+
+Use managed secrets (AWS Secrets Manager) and set up CI/CD (GitHub Actions).
+
+## Database & infra:
+
+Use managed DB (Mongo Atlas / RDS). Use replicas and backups. Use Redis for caching and sessions. Use a CDN and put static assets on S3.
+
+
+``These are all API endpoints (test them)``
+
+- POST /api/register — { fullName, email, password } → create account
+
+- POST /api/login — { email, password } → returns token
+
+- GET /api/profile — auth required → returns user detail
+
+- PUT /api/profile — auth required → update user detail
+
+- GET /api/post — users all posts
+
+- POST /api/post — create post
+
+- PUT /api/post/:id — update post
+
+- DELETE /api/post/:id — delete post
+
+``Thats it ``
