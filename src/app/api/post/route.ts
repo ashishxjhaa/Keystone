@@ -67,3 +67,33 @@ export async function GET() {
         );
     }
 }
+
+export async function PUT(req: Request) {
+    try {
+        await connectDB();
+        const { id, title, content } = await req.json();
+        const updated = await Post.findByIdAndUpdate(id, { title, content }, { new: true });
+        return NextResponse.json(updated);
+    } catch (error) {
+        return NextResponse.json(
+            { error: "Failed to Edit posts" }, 
+            { status: 500 }
+        );
+    }
+}
+
+export async function DELETE(req: Request) {
+    try {
+        await connectDB();
+        const { id } = await req.json();
+        await Post.findByIdAndDelete(id);
+        return NextResponse.json({ success: true });
+    } catch (error) {
+        return NextResponse.json(
+            { error: "Failed to Delete posts" }, 
+            { status: 500 }
+        );
+    }
+}
+
+

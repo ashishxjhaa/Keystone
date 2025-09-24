@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoAddOutline } from "react-icons/io5";
 import axios from "axios";
 import { toast } from "sonner";
@@ -10,10 +10,22 @@ export function Action() {
     const [openProfile, setOpenProfile] = useState(false)
     const [loading, setLoading] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
+    const [editingId, setEditingId] = useState<string | null>(null);
     const [postData, setPostData] = useState({
         title: "",
         content: ""
     });
+
+    useEffect(() => {
+        const handleEditPost = (e: any) => {
+            setPostData({ title: e.detail.title, content: e.detail.content });
+            setOpenProfile(true);
+            setEditingId(e.detail._id);
+        };
+        window.addEventListener("editPost", handleEditPost);
+        return () => window.removeEventListener("editPost", handleEditPost);
+    }, []);
+
 
     const handleSubmit = async () => {
         
@@ -25,8 +37,14 @@ export function Action() {
         setLoading(true);
         try {
             const token = localStorage.getItem("token");
-            const res = await axios.post("/api/post", postData, { headers: { userId: token || "" }, withCredentials: true });
-            toast.success("Posted successfully 🎉");
+            if (editingId) {
+                await axios.put("/api/post", { id: editingId, ...postData });
+                toast.success("Post updated 🎉");
+                setEditingId(null);
+            } else {
+                await axios.post("/api/post", postData, { headers: { userId: token || "" }, withCredentials: true });
+                toast.success("Posted successfully 🎉");
+            }
             window.dispatchEvent(new CustomEvent('postCreated'));
             setPostData({ title: "", content: "" });
             setOpenProfile(false);

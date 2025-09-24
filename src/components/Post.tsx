@@ -20,6 +20,7 @@ export function Post({ searchQuery = "" }) {
     const [posts, setPosts] = useState<PostType[]>([]);
     const [filteredPosts, setFilteredPosts] = useState<PostType[]>([]);
     const [openProfile, setOpenProfile] = useState<string | null>(null);
+    const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
 
     useEffect(() => {
         const filtered = posts.filter(post => 
@@ -35,6 +36,16 @@ export function Post({ searchQuery = "" }) {
         } catch (error) {
             toast.error("Failed to fetch posts");
         }
+    };
+
+    const handleDelete = async (id: string) => {
+        await axios.delete("/api/post", { data: { id } } as any);
+        toast.success("Post deleted");
+        fetchPosts();
+    };
+
+    const handleEdit = (post: PostType) => {
+        window.dispatchEvent(new CustomEvent('editPost', { detail: post }));
     };
 
     useEffect(() => {
@@ -71,11 +82,11 @@ export function Post({ searchQuery = "" }) {
                 </div>
                 {openProfile === post._id && (
                     <div className="flex gap-4 w-full justify-end pr-3">
-                        <div className="flex gap-2 items-center rounded-sm border border-[#FE6603] dark:border-[#FE6603]/80 hover:bg-[#F8E6DB] dark:hover:bg-neutral-600 text-black dark:text-white px-3 py-1.5 cursor-pointer">
+                        <div onClick={() => handleEdit(post)} className="flex gap-2 items-center rounded-sm border border-[#FE6603] dark:border-[#FE6603]/80 hover:bg-[#F8E6DB] dark:hover:bg-neutral-600 text-black dark:text-white px-3 py-1.5 cursor-pointer">
                             <div>Edit</div> 
                             <CiEdit />
                         </div>
-                        <div className="flex gap-2 items-center rounded-sm border border-[#FE6603] dark:border-[#FE6603]/80 hover:bg-[#FE6603] hover:text-white dark:hover:bg-[#FE6603]/85 text-black dark:text-white dark:hover:text-white px-3 py-1.5 cursor-pointer">
+                        <div onClick={() => setConfirmDelete(post._id)} className="flex gap-2 items-center rounded-sm border border-[#FE6603] dark:border-[#FE6603]/80 hover:bg-[#FE6603] hover:text-white dark:hover:bg-[#FE6603]/85 text-black dark:text-white dark:hover:text-white px-3 py-1.5 cursor-pointer">
                             <div>Delete</div>
                             <MdDelete />
                         </div>
@@ -83,6 +94,21 @@ export function Post({ searchQuery = "" }) {
                 )}
             </div>
             ))}
+            {confirmDelete && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
+                     <div className="bg-white dark:bg-neutral-800 p-6 rounded-lg shadow-lg text-center">
+                        <p className="mb-4 text-lg">Are you sure you want to delete this post?</p>
+                        <div className="flex justify-center gap-4">
+                            <button onClick={() => setConfirmDelete(null)} className="px-4 py-2 rounded bg-gray-300 dark:bg-gray-600 cursor-pointer">
+                                Cancel
+                            </button>
+                            <button onClick={() => { handleDelete(confirmDelete); setConfirmDelete(null);}} className="px-4 py-2 rounded bg-red-500 text-white cursor-pointer">
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }
