@@ -17,7 +17,7 @@ export function Profile() {
         </div>
 
         {openProfile && (
-            <div className="absolute top-full w-80 p-4 max-h-[80vh] max-w-[90vw] overflow-auto">
+            <div className="absolute top-full w-fit right-0 pt-2">
                 <div className="bg-[#F8E6DB] dark:bg-neutral-700 flex flex-col gap-3 p-4 rounded-t-lg">
                     <div className="flex items-center gap-3">
                         <div className="relative flex shrink-0 overflow-hidden rounded-full size-12 ring-1 ring-black/10">

@@ -21,7 +21,7 @@ export function Action() {
 
         {openProfile && (
             <div className="fixed inset-0 z-10 flex items-center justify-center">
-                <div className="relative bg-[#F6F6EF] dark:bg-neutral-700 rounded-xl p-6 w-[90%] max-w-md max-h-[67vh] overflow-y-auto border border-black/50 dark:border-white/50">
+                <div className="relative bg-[#F6F6EF] dark:bg-neutral-700 rounded-xl p-6 w-[75%] sm:w-[90%] max-w-md max-h-[67vh] overflow-y-auto border border-black/50 dark:border-white/50">
                     <div className="flex items-center justify-between mb-4">
                         <div className="font-semibold text-lg text-black dark:text-white tracking-wide">POST DETAILS</div>
                         <button onClick={() => setOpenProfile(false)} className="p-1 bg-white dark:bg-neutral-800 hover:bg-[#FE6603] dark:hover:bg-[#FE6603]/90 text-black dark:text-white hover:text-white rounded-full cursor-pointer">
