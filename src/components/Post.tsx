@@ -70,6 +70,7 @@ export function Post({ searchQuery = "" }) {
         window.addEventListener('searchQueryChanged', handleSearchChange);
         return () => window.removeEventListener('searchQueryChanged', handleSearchChange);
     }, [posts]);
+    
 
     return (
         <div className="px-10 py-12 flex gap-4 flex-wrap w-full sm:w-[90%] max-w-8xl mx-auto">

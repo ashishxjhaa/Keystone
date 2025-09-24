@@ -61,7 +61,7 @@ export function Action() {
             <div className="w-fit h-fit border border-dashed border-[#FE6603] bg-white dark:bg-neutral-700/50 rounded-sm px-4 py-2">
                 <input placeholder="Serch by title" value={searchQuery} onChange={(e) => { setSearchQuery(e.target.value); window.dispatchEvent(new CustomEvent('searchQueryChanged', { detail: e.target.value })); }} className="w-35 sm:w-64 h-5 sm:h-8 border-none outline-none focus:ring-0 focus:outline-none" />
             </div>
-            <div onClick={() => setOpenProfile(!openProfile)} className="border border-[#FE6603] dark:border-[#FE6603]/80 bg-white dark:bg-neutral-700/50 hover:bg-[#FE6603] dark:hover:bg-[#FE6603] text-black dark:text-white hover:text-white pl-2 pr-3 py-1 flex items-center gap-3 cursor-pointer">
+            <div onClick={() => { setEditingId(null); setPostData({ title: "", content: "" }); setOpenProfile(!openProfile); }} className="border border-[#FE6603] dark:border-[#FE6603]/80 bg-white dark:bg-neutral-700/50 hover:bg-[#FE6603] dark:hover:bg-[#FE6603] text-black dark:text-white hover:text-white pl-2 pr-3 py-1 flex items-center gap-3 cursor-pointer">
                 <IoAddOutline size={20} />
                 <span>Add Post</span>
             </div>
